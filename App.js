@@ -3,6 +3,7 @@ import { StyleSheet, TouchableOpacity, View, Alert } from 'react-native'
 import { Container, Header, Title, Content, Text, Icon, Card, CardItem, 
   Item, Body, Right, Button, Input, Form, Textarea, Left 
 } from 'native-base'
+import * as api from './api'
 
 
 export default class App extends React.Component {
@@ -18,9 +19,23 @@ export default class App extends React.Component {
     };
   }
 
-  PostContact = (value) => {
-    const { name, username, password } = value
-    console.log(value)
+  PostContact = (user) => {
+    // api.getUser()
+    // .then(user => console.log(user))
+    api.addUser(user)
+    .then(user => {
+      const { name, username, score } = user
+      this.setState({
+        name, 
+        username, 
+        score, 
+        password: null, 
+        confirm: null
+      })
+    }).then(() => {
+      console.log(this.state)
+    })
+    .catch(error => console.log(error, '<<<<< ERROR'))
   }
 
 
@@ -65,6 +80,17 @@ export default class App extends React.Component {
                   <Body>
                       <Button success onPress={() => this.PostContact(this.state)}>
                       <Text>SUBMIT</Text>
+                      </Button>
+                  </Body>
+                  <Right>
+                  </Right>
+              </CardItem>
+              <CardItem>
+                  <Left>
+                  </Left>
+                  <Body>
+                      <Button success onPress={() => this.PostContact(this.state)}>
+                      <Text>ADD SCORE</Text>
                       </Button>
                   </Body>
                   <Right>
